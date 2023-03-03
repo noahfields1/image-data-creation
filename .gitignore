@@ -1,0 +1,6 @@
+3D_points/
+__pycache__/
+files/
+results/
+temp.png
+.DS_Store

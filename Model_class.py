@@ -1,7 +1,11 @@
 import util
 import tools #from the github repository
+from vtk.util.numpy_support import vtk_to_numpy as v2n
+import matplotlib.image
 import numpy as np
 import PIL 
+import yaml
+import vtk
 class Model():
 	def __init__(self,model_name, pathway):
 		self.model_name = model_name
@@ -51,23 +55,9 @@ class Image(Branch):
 		self.Y_png_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Y.png"
 		self.Yc_np_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Yc.npy"
 		self.Yc_png_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Yc.png"
-	def generateXPNG(image_type,arr):
-		pass
-		#reader = vtk.vtkXMLImageDataReader()
-    	#reader.SetFileName(vtiFilePath)
-    	#reader.Update()
-    	#vtiimage = reader.GetOutput()
-    	#extent = vtiimage.GetExtent()
-    	#width = extent[1] - extent[0] + 1
-    	#height = extent[3] - extent[2] + 1
-    	#image_data = np.reshape(v2n(vtiimage.GetPointData().GetArray(0)), (width, height))
-    	#np.save(self.X_np_file,image_data) #saving npy image
-    	#matplotlib.image.imsave(output_path + "image" + vtpfile[5:-4] + '.png', image_data,cmap='gray')
-    	#img = Image.open(output_path + "image" + vtpfile[5:-4] + '.png').convert('L')
-    	#img.save(self.X_png_file) #saving png image
-	def generateYAML():
-		yaml_dict = [{'X':self.X_np_file},{'Y':self.Y_np_file},{'Yc':self.Yc_np_file},{'dimensions':self.dimensions},{'extent':self.extent},{'image':image_path},{'path_id':''},{'path_name':self.branch_name},{'point':self.image_name},{'radius':''},{'spacing':''}]
-		with open(yaml_file, 'w') as file:
+	def generateYAML(self):
+		yaml_dict = [{'X':self.X_np_file},{'Yc':self.Yc_np_file},{'dimensions':self.dimensions},{'extent':self.extent},{'path_id':''},{'path_name':self.branch_name},{'point':self.image_name},{'radius':''},{'spacing':''}]
+		with open(self.yaml_file, 'w') as file:
 			documents = yaml.dump(yaml_dict,file)
 	def getPoints(self):
 		pts = []
@@ -191,31 +181,49 @@ class Image(Branch):
 		self.BifurcationID = bifurcationId
 	def getRadius():
 		pass
-	def createImg(self):
+	def createImg(self,image_type):
 		arr = np.zeros((240,240))
-		for i in self.points2D_filtered:
-			arr[i[0],i[1]] = 1
+		if image_type == "X":
+			reader = vtk.vtkXMLImageDataReader()
+			reader.SetFileName(self.vti_file)
+			reader.Update()
+			vtiimage = reader.GetOutput()
+			extent = vtiimage.GetExtent()
+			width = extent[1] - extent[0] + 1
+			height = extent[3] - extent[2] + 1
+			image_data = np.reshape(v2n(vtiimage.GetPointData().GetArray(0)), (width, height))
+			np.save(self.X_np_file,image_data) #saving npy image
+			matplotlib.image.imsave('temp.png', image_data,cmap='gray')
+			img = PIL.Image.open('temp.png').convert('L')
+			img.save(self.X_png_file) #saving png image
+		if image_type == "Yc":
+			for i in self.points2D_filtered:
+				arr[i[0],i[1]] = 1
+			arr = arr * 255
+			arr = arr.astype(np.uint8)
+			im = PIL.Image.fromarray(arr)
+			im.save(self.Yc_png_file)
+			np.save(self.Yc_np_file,arr)
+		elif image_type == "Y":
+			for i in self.points2D:
+				arr[i[0],i[1]] = 1
+			arr = arr * 255
+			arr = arr.astype(np.uint8)
+			im = PIL.Image.fromarray(arr)
+			im.save(self.Y_png_file)
+		
 
-		arr = arr * 255
-		arr = arr.astype(np.uint8)
-		im = PIL.Image.fromarray(arr)
-		im.save(self.Yc_png_file)
-		np.save(self.Yc_np_file,arr)
 
 
-
-m1 = Model("0083_2002",".")
-b1 = Branch(m1, "LPA")
-i1 = Image(b1,"10")
-i1.generateFileNames()
-print(i1.points3D_file)
-#print(i1.points3D_file)
-i1.getPoints()
-#print(len(i1.points3D))
-#rint(i1.points2D)
-print(i1.Yc_png_file)
-i1.connectPoints()
-#print(i1.points2D_filtered)
-#util.previewImage(i1.points2D_filtered)
-i1.createImg()
+# m1 = Model("0083_2002",".")
+# b1 = Branch(m1, "LPA")
+# i1 = Image(b1,"10")
+# i1.generateFileNames()
+# i1.getPoints()
+# print(i1.Yc_png_file)
+# i1.connectPoints()
+# i1.createImg("Yc")
+# i1.createImg("Y")
+# i1.createImg("X")
+# i1.generateYAML()
 #print(b1.branch_name, b1.pathway, b1. model_name)
