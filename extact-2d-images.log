@@ -1,0 +1,23 @@
+[extact-2d-images] INFO - Parse arguments ...
+[extact-2d-images] INFO - Image file: models/0071_0001/Images/OSMSC0071-cm.vti
+[extact-2d-images] INFO - Model file: models/0071_0001/Meshes/0071_0001.vtp
+[extact-2d-images] INFO - Path file: models/0071_0001/Paths/1010_RSA.pth
+[extact-2d-images] INFO - Slice increment:  10
+[extact-2d-images] INFO - Slice width:  5
+[extact-2d-images] INFO - Volume: 
+[extact-2d-images] INFO -   dimensions: (120, 512, 512)
+[extact-2d-images] INFO -   extent: (0, 119, 0, 511, 0, 511)
+[extact-2d-images] INFO -   spacing: (0.0599998, 0.0273438, 0.0273438)
+[extact-2d-images] INFO -   origin: (-4.298, -3.38306, -6.96357)
+[extact-2d-images] INFO -   bounds: (-4.298, 2.8419761999999995, -3.38306, 10.5896218, -6.96357, 7.0091118)
+[extact-2d-images] INFO -   width: 119
+[extact-2d-images] INFO -   height: 511
+[extact-2d-images] INFO -   depth: 511
+[extact-2d-images] INFO -   scalar_range: (0.0, 3725.0)
+[extact-2d-images] INFO - Path ID: 2
+[extact-2d-images] INFO -   Element ID: 1
+[extact-2d-images] INFO -     Number of control points: 7
+[extact-2d-images] INFO -     Number of path points: 100
+[extact-2d-images] INFO - Path length: 3.24481
+[extact-2d-images] INFO - Number of points: 59682
+[extact-2d-images] INFO - Number of triangles: 119360

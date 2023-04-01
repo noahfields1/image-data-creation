@@ -1,6 +1,9 @@
 3D_points/
 __pycache__/
 files/
+centerlines/
 results/
+models/
+testing.py
 temp.png
 .DS_Store
