@@ -1,5 +1,6 @@
 import util
 import tools #from the github repository
+from skimage.transform import resize
 from vtk.util.numpy_support import vtk_to_numpy as v2n
 import matplotlib.image
 import numpy as np
@@ -67,6 +68,7 @@ class Image(Branch):
 		self.yaml_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".yaml"
 		self.X_np_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".X.npy"
 		self.X_png_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".X.png"
+		self.Y_np_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Y.npy"
 		self.Y_png_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Y.png"
 		self.Yc_np_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Yc.npy"
 		self.Yc_png_file = "./files/" + self.model_name + "/" + self.branch_name + "/" + self.image_name + ".Yc.png"
@@ -77,7 +79,7 @@ class Image(Branch):
 	'X' and 'Yc'. The rest of the features are extraneous. 
 	"""
 	def generateYAML(self):
-		yaml_dict = [{'X':self.X_np_file},{'Yc':self.Yc_np_file},{'dimensions':self.dimensions},{'extent':self.extent},{'path_id':''},{'path_name':self.branch_name},{'point':self.image_name},{'radius':self.radius},{'spacing':''},{'bifurcation_id':self.BifurcationID},{'ratio (circum^2/area)':self.ratio}]
+		yaml_dict = {'X':self.X_np_file,'Y':self.Y_np_file,'Yc':self.Yc_np_file,'dimensions':self.dimensions,'extent':self.extent,'image':self.model_name,'path_id':'','path_name':self.branch_name,'point':int(self.image_name),'radius':self.radius,'spacing':0.029,'bifurcation_id':self.BifurcationID,'ratio (circum^2/area)':round(self.ratio,2)}
 		with open(self.yaml_file, 'w') as file:
 			documents = yaml.dump(yaml_dict,file)
 
@@ -307,7 +309,11 @@ class Image(Branch):
 			width = extent[1] - extent[0] + 1
 			height = extent[3] - extent[2] + 1
 			image_data = np.reshape(v2n(vtiimage.GetPointData().GetArray(0)), (width, height))
-			np.save(self.X_np_file,image_data) #saving npy image
+
+			# Resize the array to 240 by 240
+			resized_image_data = resize(image_data, (240, 240), anti_aliasing=True)
+			np.save(self.X_np_file,resized_image_data) #saving npy image
+
 			matplotlib.image.imsave('temp.png', image_data,cmap='gray')
 			img = PIL.Image.open('temp.png').convert('L')
 			img.save(self.X_png_file) #saving png image
@@ -315,7 +321,7 @@ class Image(Branch):
 		elif image_type == "Yc":
 			for i in self.points2D_filtered:
 				arr[i[0],i[1]] = 1
-			arr = arr * 255
+			#arr = arr * 255
 			arr = arr.astype(np.uint8)
 			im = PIL.Image.fromarray(arr)
 			im.save(self.Yc_png_file)
@@ -329,5 +335,6 @@ class Image(Branch):
 			arr = arr.astype(np.uint8)
 			im = PIL.Image.fromarray(arr)
 			im.save(self.Y_png_file)
+			np.save(self.Y_np_file,arr)
 		
 
