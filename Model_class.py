@@ -314,14 +314,14 @@ class Image(Branch):
 			resized_image_data = resize(image_data, (240, 240), anti_aliasing=True)
 			np.save(self.X_np_file,resized_image_data) #saving npy image
 
-			matplotlib.image.imsave('temp.png', image_data,cmap='gray')
+			matplotlib.image.imsave('temp.png', resized_image_data,cmap='gray')
 			img = PIL.Image.open('temp.png').convert('L')
 			img.save(self.X_png_file) #saving png image
 
 		elif image_type == "Yc":
 			for i in self.points2D_filtered:
 				arr[i[0],i[1]] = 1
-			#arr = arr * 255
+
 			arr = arr.astype(np.uint8)
 			im = PIL.Image.fromarray(arr)
 			im.save(self.Yc_png_file)
@@ -331,7 +331,7 @@ class Image(Branch):
 			for i in self.points2D:
 				arr[i[0],i[1]] = 1
 			arr[121,121] = 1
-			arr = arr * 255
+
 			arr = arr.astype(np.uint8)
 			im = PIL.Image.fromarray(arr)
 			im.save(self.Y_png_file)
