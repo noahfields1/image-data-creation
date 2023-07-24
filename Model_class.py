@@ -323,7 +323,7 @@ class Image(Branch):
 				arr[i[0],i[1]] = 1
 
 			arr = arr.astype(np.uint8)
-			im = PIL.Image.fromarray(arr)
+			im = PIL.Image.fromarray(arr * 255)
 			im.save(self.Yc_png_file)
 			np.save(self.Yc_np_file,arr)
 
@@ -331,9 +331,9 @@ class Image(Branch):
 			for i in self.points2D:
 				arr[i[0],i[1]] = 1
 			arr[121,121] = 1
-
+			
 			arr = arr.astype(np.uint8)
-			im = PIL.Image.fromarray(arr)
+			im = PIL.Image.fromarray(arr * 255)
 			im.save(self.Y_png_file)
 			np.save(self.Y_np_file,arr)
 		

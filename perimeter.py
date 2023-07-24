@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def process_files():
-    # Get all file paths ending in Y.npy recursively in directory './files'
+    # Get all file paths ending in Yc.npy recursively in directory './files'
     y_file_paths = glob.glob(os.path.join('./files', '**', '*Yc.npy'), recursive=True)
 
     for y_file_path in y_file_paths:
@@ -15,11 +15,11 @@ def process_files():
         # Initialize empty list to store perimeter pixel coordinates
         perimeter = []
 
-        # Loop through each pixel in the Y.npy array except for the edges
+        # Loop through each pixel in the Yc.npy array except for the edges
         for i in range(1, 239):
             for j in range(1, 239):
                 # Check if the pixel is white and has a black neighbor in any direction
-                if y_arr[i][j] == 255 and (y_arr[i-1][j] == 0 or y_arr[i+1][j] == 0 or y_arr[i][j-1] == 0 or y_arr[i][j+1] == 0):
+                if y_arr[i][j] == 1 and (y_arr[i-1][j] == 0 or y_arr[i+1][j] == 0 or y_arr[i][j-1] == 0 or y_arr[i][j+1] == 0):
                     perimeter.append((i, j))
 
         # Create new array where every coordinate is black (0) except those in the 'perimeter' list

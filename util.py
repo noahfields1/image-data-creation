@@ -64,12 +64,14 @@ def create_directories(models_dir):
 		if m == ".DS_Store":
 			continue
 		paths = os.listdir(models_dir + "/" + m + "/Paths/")
-		if not os.path.exists("./3D_points/" + m):
+		if not os.path.exists("./3D_points/" + m): #if the pathway already exists, ignore it
 			os.mkdir("./3D_points/" + m)
 		else:
 			continue
 		if not os.path.exists("./files/" + m):
 			os.mkdir("./files/" + m)
+		else:
+			continue
 		if not os.path.exists("./results/" + m):
 			os.mkdir("./results/" + m)
 		for p in paths:
@@ -90,7 +92,7 @@ def create_slices(model,path):
 	models_file = "models/" + model + "/Meshes/" + model + ".vtp"
 	results_dir = "results/" + model + "/" + path
 	path_dir = "models/" + model + "/Paths/" + path + ".pth"
-	slice_increment = "10"
+	slice_increment = "1" #usually 10
 	slice_width = "5"
 	extract_slices = "True"
 	os.system("python3 extract-2d-images.py --image-file " + images_path + " --path-file " + path_dir + " --model-file " + models_file + " --slice-increment " + slice_increment + " --path-sample-method number --slice-width " + slice_width + " --extract-slices " + extract_slices + " --results-directory " + results_dir)
@@ -99,7 +101,7 @@ def create_slices(model,path):
 def summary():
 	yaml_count = count_yaml_files("./files")
 	print("There are " + str(yaml_count) + " new training images!")
-	write_files_txt("Users/noah/Desktop/image-data-creation/files")
+	write_files_txt("./files")
 
 #this function takes in a pathways and returns the number of yaml files recursively found
 def count_yaml_files(path):
@@ -114,7 +116,7 @@ def get_yaml_files(path):
     yaml_files = []
     for file in glob.glob(path + "/**/*.yaml", recursive=True):
         if os.path.isfile(file):
-            yaml_files.append("files/" + os.path.relpath(file, path))
+            yaml_files.append("./files/" + os.path.relpath(file, path))
     return yaml_files
 
 #This function writes all the yaml files into 'files.txt'

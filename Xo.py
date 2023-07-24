@@ -12,7 +12,8 @@ for root, dirs, files in os.walk(home_dir):
         if file.endswith('X.npy'):
             # Load the X.npy file and standardize values to be between 0 and 1
             x = np.load(os.path.join(root, file))
-            x = (x - np.min(x)) / (np.max(x) - np.min(x))
+            if np.max(x) != np.min(x): 
+                x = (x - np.min(x)) / (np.max(x) - np.min(x))
 
             # Load the corresponding Yp.npy file
             y = np.load(os.path.join(root, file.replace('X.npy', 'Yp.npy')))

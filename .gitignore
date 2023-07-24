@@ -4,6 +4,7 @@ files/
 centerlines/
 results/
 models/
+files.zip
 testing.py
 temp.png
 .DS_Store

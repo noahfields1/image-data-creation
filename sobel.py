@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import glob
 
-def sobel_average(files, output_file):
+def sobel_average(files, output_file, target_mean):
     # Loop through all .npy files in the directory
     #files = glob.glob(os.path.join(input_dir, '**', '*.npy'), recursive=True)
 
@@ -13,7 +13,8 @@ def sobel_average(files, output_file):
 
     for file in files:
         # Load X and Y images
-        X = np.load(file)
+        X = np.load(file,allow_pickle=True)
+        X = (2 * (X - X.min()) / (X.max() - X.min())) - 1  #between -1 and 1
         Y = np.load(file.replace('X.npy', 'Yp.npy'))
 
         # Apply Sobel filter to X image
@@ -24,7 +25,7 @@ def sobel_average(files, output_file):
         Y_white_pixels = np.argwhere(Y == 1)
         Y_white_pixels_list.append(Y_white_pixels)
 
-    # Combine X_sobel and Y_white_pixels into one array of tuples
+    # Combine X_sobel and Y_white_pixels (boundary) into one array of tuples
     XY_tuples = list(zip(X_sobel_list, Y_white_pixels_list))
 
     # Compute average Sobel values for white pixels in each image
@@ -40,20 +41,23 @@ def sobel_average(files, output_file):
     # print(np.mean(averages),np.std(averages))
     # plt.hist(averages, bins=20)
     # plt.show()
-    target_mean = 120
+    target_mean = 120 #
     current_mean = sum(averages) / len(averages)
     while current_mean < target_mean:
         min_index = averages.index(min(averages))
         del averages[min_index]
         del files[min_index]
         current_mean = sum(averages) / len(averages)
-    print(len(files))
+    #print(len(files),averages)
     with open(output_file, 'w') as f:
         for file in files:
             f.write(file + '\n')
 
 
+if __name__ == "__main__":
+    files = glob.glob(os.path.join('./files', '**', '0*', '*X.npy'), recursive=True) + glob.glob(os.path.join('./files', '**', '[!0]*', '*X.npy'), recursive=True)
 
-files = glob.glob(os.path.join('./files', '**', '0*', '*X.npy'), recursive=True) + glob.glob(os.path.join('./files', '**', '[!0]*', '*X.npy'), recursive=True)
-# Example usage
-sobel_average(files, 'output120.txt')
+    # Example usage
+    target_mean = 87
+    output_file = None
+    sobel_average(files, output_file, target_mean)

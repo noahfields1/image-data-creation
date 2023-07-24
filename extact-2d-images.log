@@ -1,23 +1,23 @@
 [extact-2d-images] INFO - Parse arguments ...
-[extact-2d-images] INFO - Image file: models/0071_0001/Images/OSMSC0071-cm.vti
-[extact-2d-images] INFO - Model file: models/0071_0001/Meshes/0071_0001.vtp
-[extact-2d-images] INFO - Path file: models/0071_0001/Paths/1010_RSA.pth
-[extact-2d-images] INFO - Slice increment:  10
+[extact-2d-images] INFO - Image file: models/0119_0001/Images/OSMSC0119-cm.vti
+[extact-2d-images] INFO - Model file: models/0119_0001/Meshes/0119_0001.vtp
+[extact-2d-images] INFO - Path file: models/0119_0001/Paths/RPA_br1_br1_br2.pth
+[extact-2d-images] INFO - Slice increment:  1
 [extact-2d-images] INFO - Slice width:  5
 [extact-2d-images] INFO - Volume: 
-[extact-2d-images] INFO -   dimensions: (120, 512, 512)
-[extact-2d-images] INFO -   extent: (0, 119, 0, 511, 0, 511)
-[extact-2d-images] INFO -   spacing: (0.0599998, 0.0273438, 0.0273438)
-[extact-2d-images] INFO -   origin: (-4.298, -3.38306, -6.96357)
-[extact-2d-images] INFO -   bounds: (-4.298, 2.8419761999999995, -3.38306, 10.5896218, -6.96357, 7.0091118)
-[extact-2d-images] INFO -   width: 119
+[extact-2d-images] INFO -   dimensions: (512, 512, 483)
+[extact-2d-images] INFO -   extent: (0, 511, 0, 511, 0, 482)
+[extact-2d-images] INFO -   spacing: (0.0617188, 0.0617188, 0.05)
+[extact-2d-images] INFO -   origin: (-13.9278, -4.92781, -24.7475)
+[extact-2d-images] INFO -   bounds: (-13.9278, 17.610506799999996, -4.92781, 26.610496799999996, -24.7475, -0.6474999999999973)
+[extact-2d-images] INFO -   width: 511
 [extact-2d-images] INFO -   height: 511
-[extact-2d-images] INFO -   depth: 511
-[extact-2d-images] INFO -   scalar_range: (0.0, 3725.0)
-[extact-2d-images] INFO - Path ID: 2
+[extact-2d-images] INFO -   depth: 482
+[extact-2d-images] INFO -   scalar_range: (-1024.0, 3071.0)
+[extact-2d-images] INFO - Path ID: 303
 [extact-2d-images] INFO -   Element ID: 1
-[extact-2d-images] INFO -     Number of control points: 7
+[extact-2d-images] INFO -     Number of control points: 10
 [extact-2d-images] INFO -     Number of path points: 100
-[extact-2d-images] INFO - Path length: 3.24481
-[extact-2d-images] INFO - Number of points: 59682
-[extact-2d-images] INFO - Number of triangles: 119360
+[extact-2d-images] INFO - Path length: 4.2073
+[extact-2d-images] INFO - Number of points: 54046
+[extact-2d-images] INFO - Number of triangles: 108088
