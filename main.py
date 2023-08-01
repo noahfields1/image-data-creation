@@ -1,6 +1,7 @@
 import os
 import Model_class
 import util
+import tidy
 
 #Removes all unneseccary files
 # os.system("find ./ -type d -name 'Simulations' -exec rm -r {} +")
@@ -19,7 +20,7 @@ os.system("python3 perimeter.py") #This file creates a file with just the perime
 os.system("python3 Xo.py") #This file creates a 'Xo' file with the perimeter overlayed on top of the original image.
 
 #Filtering to only include good photos
-os.system("python3 filter.py")
+tidy.filter()
 
 
 #util.write_files_txt("./files")
