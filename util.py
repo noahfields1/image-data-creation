@@ -144,6 +144,36 @@ def euclideanDistance(p1,p2):
 def findRadius():
 	pass
 
+def find_files_with_suffix(suffix, directory='./files'):
+	file_paths = []
+	for root, _, files in os.walk(directory):
+		for filename in files:
+			if filename.endswith(suffix):
+				file_path = os.path.join(root, filename)
+				file_paths.append(file_path)
+	return file_paths
+
+def write_array_to_file(my_array, output_file):
+    # Open the file in write mode
+    with open(output_file, 'w') as f_out:
+        # Write each element of the array to a new line in the file
+        for element in my_array:
+            f_out.write(str(element) + '\n')
+
+def file_to_array(file_path):
+    # Initialize an empty list to store the pathways
+    pathways_list = []
+
+    # Read the file and extract the pathways
+    with open(file_path, 'r') as f:
+        for line in f:
+            # Remove leading and trailing whitespaces and newline characters
+            pathway = line.strip()
+            # Append the pathway to the list
+            pathways_list.append(pathway)
+
+    return pathways_list
+
 #This is a function used to preview numpy arrays in matplotlib.pyplot.
 def previewImage(pts):
 	arr = np.zeros((240,240))

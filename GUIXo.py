@@ -1,7 +1,7 @@
 import os
 import tkinter as tk
 from PIL import Image, ImageTk
-
+import util
 class ImageBrowser:
     def __init__(self, home_dir):
         self.home_dir = home_dir
@@ -44,16 +44,21 @@ class ImageBrowser:
         self.search_entry.bind("<Return>", lambda event: self.search_button.invoke())
 
         # initialize images and listbox
-        self.load_images()
+        self.load_images("clear_circular_vessels.txt")
         self.show_image()
         self.update_listbox()
 
-    def load_images(self):
-        for root, dirs, files in os.walk(self.home_dir):
-            for filename in files:
-                if filename.endswith("Xo.png"):
-                    image_path = os.path.join(root, filename)
-                    self.image_paths.append(image_path)
+    def load_images(self,files_list=None):
+        if files_list == None:
+            self.image_paths = util.find_files_with_suffix("Xo.png")
+        else:
+            self.image_paths = util.file_to_array(files_list)
+        
+        # for root, dirs, files in os.walk(self.home_dir):
+        #     for filename in files:
+        #         if filename.endswith("Xo.png"):
+        #             image_path = os.path.join(root, filename)
+        #             self.image_paths.append(image_path)
 
     def show_image(self):
         image_path = self.image_paths[self.current_image_index]
