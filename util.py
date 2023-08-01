@@ -3,6 +3,7 @@ import numpy as np
 import os
 import glob
 import Model_class
+import zipfile
 
 """
 This function is designed to be used after 'create_directories'.
@@ -153,6 +154,23 @@ def find_files_with_suffix(suffix, directory='./files'):
 				file_paths.append(file_path)
 	return file_paths
 
+#This function takes in an array of pathways and removes the extension
+#'.files/dir1/file1.X.txt' -> '.files/dir1/file1.'
+def remove_file_extensions(pathways):
+	modified_pathways = []
+
+	for pathway in pathways:
+		arr = pathway.split('/')
+		arr[-1] = arr[-1].split('.')[0] + '.'
+		modified_pathway = '/'.join(arr)
+		modified_pathways.append(modified_pathway)
+
+	return modified_pathways
+
+def add_file_extensions(pathways, suffix):
+    modified_pathways = [pathway + suffix for pathway in pathways]
+    return modified_pathways
+
 def write_array_to_file(my_array, output_file):
     # Open the file in write mode
     with open(output_file, 'w') as f_out:
@@ -160,6 +178,10 @@ def write_array_to_file(my_array, output_file):
         for element in my_array:
             f_out.write(str(element) + '\n')
 
+"""
+Purpose: There may exist a file that has one pathway per line.
+This function will read in the text file and turn this into an array.
+"""
 def file_to_array(file_path):
     # Initialize an empty list to store the pathways
     pathways_list = []
@@ -174,6 +196,29 @@ def file_to_array(file_path):
 
     return pathways_list
 
+"""
+#Given a list of files, 'files.txt' we will zip the filtered files
+#into a zip file ready to be exported to a GPU.
+"""
+def create_zip_with_selected_files(file_path = "files.txt", zip_file_name = "files_tidy.zip"):
+
+	pathways_list_yaml = file_to_array(file_path)
+	pathways_list = remove_file_extensions(pathways_list_yaml)
+	pathways_list_X_npy = add_file_extensions(pathways_list,"X.npy")
+	pathways_list_Yc_npy = add_file_extensions(pathways_list,"Yc.npy")
+
+	with zipfile.ZipFile(zip_file_name, 'w') as zipf:
+		print("Starting Zipping")
+		for pathway in pathways_list_yaml:
+			zipf.write(pathway, os.path.relpath(pathway, 'files'))
+		print("Finished yaml files, Starting X.npy files")
+		for pathway in pathways_list_X_npy:
+			zipf.write(pathway, os.path.relpath(pathway, 'files'))
+		print("Finished yaml files, Starting Yc.npy files")
+		for pathway in pathways_list_Yc_npy:
+			zipf.write(pathway, os.path.relpath(pathway, 'files'))
+
+
 #This is a function used to preview numpy arrays in matplotlib.pyplot.
 def previewImage(pts):
 	arr = np.zeros((240,240))
@@ -181,5 +226,7 @@ def previewImage(pts):
 		arr[i[0],i[1]] = 1
 	plt.imshow(arr)
 	plt.show()
+
+create_zip_with_selected_files()
 
 
