@@ -21,7 +21,8 @@ os.system("python3 Xo.py") #This file creates a 'Xo' file with the perimeter ove
 
 #Filtering to only include good photos
 tidy.filter()
-
+#zipping filters
+util.create_zip_with_selected_files()
 
 #util.write_files_txt("./files")
 #util.summary()

@@ -227,6 +227,5 @@ def previewImage(pts):
 	plt.imshow(arr)
 	plt.show()
 
-create_zip_with_selected_files()
 
 
