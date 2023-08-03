@@ -2,6 +2,7 @@ import os
 import numpy as np
 import util
 
+#Determine if a vessel is circular enough (arbitrary, but good threshold of 0.75)
 def is_non_circular_vessel(image_data, threshold=0.75):
     # Compute the eccentricity of the binary image
     white_pixels = np.where(image_data == 1)
@@ -79,7 +80,7 @@ def filter():
     circular_vessels,non_circular_vessels = find_circular_vessels()
     clear_circular_vessels = filter_sobel(circular_vessels)
     clear_circular_vessels_yaml = util.add_file_extensions(clear_circular_vessels,"yaml")
-    output_file = "files.txt"
+    output_file = "files_clean.txt"
     util.write_array_to_file(clear_circular_vessels_yaml, output_file)
 
 if __name__ == "__main__":

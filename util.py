@@ -4,6 +4,8 @@ import os
 import glob
 import Model_class
 import zipfile
+import yaml
+from datetime import date
 
 """
 This function is designed to be used after 'create_directories'.
@@ -208,6 +210,8 @@ def create_zip_with_selected_files(file_path = "files.txt", zip_file_name = "fil
 	pathways_list_Yc_npy = add_file_extensions(pathways_list,"Yc.npy")
 
 	with zipfile.ZipFile(zip_file_name, 'w') as zipf:
+		zipf.write("files_clean.txt", os.path.relpath("files_clean.txt", 'files'))
+		
 		print("Starting Zipping")
 		for pathway in pathways_list_yaml:
 			zipf.write(pathway, os.path.relpath(pathway, 'files'))
@@ -218,7 +222,35 @@ def create_zip_with_selected_files(file_path = "files.txt", zip_file_name = "fil
 		for pathway in pathways_list_Yc_npy:
 			zipf.write(pathway, os.path.relpath(pathway, 'files'))
 
+def create_new_yaml(yaml_file):
+    # Load the YAML data from the existing file
+    with open(yaml_file, 'r') as file:
+        yaml_data = yaml.safe_load(file)
 
+    # Create the new name with the current date
+    current_date = date.today().strftime("%Y%m%d")
+    name = f"{yaml_data['NAME']}_{current_date}"
+    yaml_data['NAME'] = name
+
+    # Update LOG_FILE, ITER_FILE, and MODEL_DIR with the new name
+    yaml_data['LOG_FILE'] = f"{yaml_data['RESULTS_DIR']}/{name}/log/train.txt"
+    yaml_data['ITER_FILE'] = f"{yaml_data['RESULTS_DIR']}/{name}/log/iter.txt"
+    yaml_data['MODEL_DIR'] = f"{yaml_data['RESULTS_DIR']}/{name}/model"
+
+    # Comment out TRAIN_PATTERNS and get all subdirectories as new TRAIN_PATTERNS
+    yaml_data['TRAIN_PATTERNS'] = []
+
+    for root, dirs, files in os.walk('./files'):
+        for d in dirs:
+            yaml_data['TRAIN_PATTERNS'].append(d)
+
+    # Save the modified YAML data to the new file
+    new_yaml_file = f"{name}.yaml"
+    with open(new_yaml_file, 'w') as file:
+        yaml.dump(yaml_data, file)
+
+    return new_yaml_file
+    
 #This is a function used to preview numpy arrays in matplotlib.pyplot.
 def previewImage(pts):
 	arr = np.zeros((240,240))
