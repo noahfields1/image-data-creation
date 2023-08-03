@@ -1,6 +1,8 @@
 import os
 import Model_class
 import util
+import perimeter
+import Xo
 import tidy
 
 #Removes all unneseccary files
@@ -16,8 +18,8 @@ util.create_directories("./models")
 util.create_images()
 
 #This creates files which will be used for filtering images and displaying them
-os.system("python3 perimeter.py") #This file creates a file with just the perimeter outlined
-os.system("python3 Xo.py") #This file creates a 'Xo' file with the perimeter overlayed on top of the original image.
+perimeter.extract_perimeter() #This file creates a file with just the perimeter outlined
+Xo.create_Xo_images("./files") #This file creates a 'Xo' file with the perimeter overlayed on top of the original image.
 
 #Filtering to only include good photos
 tidy.filter()

@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 
-def process_files():
+def extract_perimeter():
     # Get all file paths ending in Yc.npy recursively in directory './files'
     y_file_paths = glob.glob(os.path.join('./files', '**', '*Yc.npy'), recursive=True)
 
@@ -34,4 +34,4 @@ def process_files():
         new_image_path = y_file_path.replace('Yc.npy', 'Yp.png')
         plt.imsave(new_image_path, new_arr, cmap='gray')
 
-process_files()
+
