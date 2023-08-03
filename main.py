@@ -14,12 +14,12 @@ import tidy
 This is the main file to run.
 We assume that the models are stored in the './models' directory.
 """
-# util.create_directories("./models")
-# util.create_images()
+util.create_directories("./models")
+util.create_images()
 
 #This creates files which will be used for filtering images and displaying them
-#perimeter.extract_perimeter() #This file creates a file with just the perimeter outlined
-#Xo.create_Xo_images("./files") #This file creates a 'Xo' file with the perimeter overlayed on top of the original image.
+perimeter.extract_perimeter() #This file creates a file with just the perimeter outlined
+Xo.create_Xo_images("./files") #This file creates a 'Xo' file with the perimeter overlayed on top of the original image.
 
 #Filtering to only include good photos
 tidy.filter()
