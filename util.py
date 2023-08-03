@@ -240,9 +240,14 @@ def create_new_yaml(yaml_file):
     # Comment out TRAIN_PATTERNS and get all subdirectories as new TRAIN_PATTERNS
     yaml_data['TRAIN_PATTERNS'] = []
 
-    for root, dirs, files in os.walk('./files'):
-        for d in dirs:
-            yaml_data['TRAIN_PATTERNS'].append(d)
+    directory = './files'
+    for item in os.listdir(directory):
+        item_path = os.path.join(directory, item)
+        if os.path.isdir(item_path):
+            yaml_data['TRAIN_PATTERNS'].append(item_path.split('/')[-1])
+
+    # Remove single quotes from the values
+    yaml_data["TRAIN_PATTERNS"] = [pattern.strip("'") for pattern in yaml_data["TRAIN_PATTERNS"]]
 
     # Save the modified YAML data to the new file
     new_yaml_file = f"{name}.yaml"
