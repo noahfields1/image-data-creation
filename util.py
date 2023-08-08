@@ -207,6 +207,7 @@ def create_zip_with_selected_files(file_path = "files.txt", zip_file_name = "fil
 	pathways_list_yaml = file_to_array(file_path)
 	pathways_list = remove_file_extensions(pathways_list_yaml)
 	pathways_list_X_npy = add_file_extensions(pathways_list,"X.npy")
+	pathways_list_Y_npy = add_file_extensions(pathways_list,"Y.npy")
 	pathways_list_Yc_npy = add_file_extensions(pathways_list,"Yc.npy")
 
 	with zipfile.ZipFile(zip_file_name, 'w') as zipf:
@@ -217,6 +218,9 @@ def create_zip_with_selected_files(file_path = "files.txt", zip_file_name = "fil
 			zipf.write(pathway, os.path.relpath(pathway, 'files'))
 		print("Finished yaml files, Starting X.npy files")
 		for pathway in pathways_list_X_npy:
+			zipf.write(pathway, os.path.relpath(pathway, 'files'))
+		print("Finished yaml files, Starting Y.npy files")
+		for pathway in pathways_list_Y_npy:
 			zipf.write(pathway, os.path.relpath(pathway, 'files'))
 		print("Finished yaml files, Starting Yc.npy files")
 		for pathway in pathways_list_Yc_npy:
