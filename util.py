@@ -202,7 +202,7 @@ def file_to_array(file_path):
 #Given a list of files, 'files.txt' we will zip the filtered files
 #into a zip file ready to be exported to a GPU.
 """
-def create_zip_with_selected_files(file_path = "files.txt", zip_file_name = "files_tidy.zip"):
+def create_zip_with_selected_files(file_path = "files_clean.txt", zip_file_name = "files_tidy.zip"):
 
 	pathways_list_yaml = file_to_array(file_path)
 	pathways_list = remove_file_extensions(pathways_list_yaml)
