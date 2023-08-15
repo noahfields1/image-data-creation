@@ -35,11 +35,11 @@ def find_circular_vessels():
     return circular_vessels,non_circular_vessels
 
 #Filter the images to make sure the gradient (sobel filter) is high enough
-def filter_sobel(files,gradient_threshold=1):
+def filter_sobel(files,gradient_threshold=0.2):
     # Initialize arrays to store Sobel-filtered images and white pixel coordinates
     X_sobel_list = []
     Y_white_pixels_list = []
-
+    #f = open("/Users/noah/Desktop/gradients.txt","w")
     for file in files:
         # Load X and Y images
         X = np.load(file + 'X.npy',allow_pickle=True)
@@ -68,12 +68,15 @@ def filter_sobel(files,gradient_threshold=1):
             averages.append(np.mean(X_sobel[Y_white_pixels[:, 0], Y_white_pixels[:, 1]]))
 
     #Deleting images that are no good (low-threshold)
+    store_indices = []
     for index,grad in enumerate(averages):
         if grad < gradient_threshold:
-            del averages[index]
-            del files[index]
+            store_indices.append(index)
 
-    return files
+    new_files = [elem for index, elem in enumerate(files) if index not in store_indices]
+
+
+    return new_files
 
 def filter():
     # Example usage
@@ -82,8 +85,8 @@ def filter():
     clear_circular_vessels_yaml = util.add_file_extensions(clear_circular_vessels,"yaml")
     output_file = "files_clean.txt"
     util.write_array_to_file(clear_circular_vessels_yaml, output_file)
+    
 
-if __name__ == "__main__":
-    filter()
+
 
 
